@@ -7,10 +7,7 @@ This repository contains code for analyzing air quality data in New York City as
 - [Introduction](#introduction)
 - [Data](#data)
 - [Analysis](#analysis)
-- [Results](#results)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
