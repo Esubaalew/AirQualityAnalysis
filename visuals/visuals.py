@@ -1,7 +1,7 @@
 import sys
 sys.path.append('../')
 
-from Analyze.analyze import add_geo_coordinates, get_monthly_trends, get_most_common_pollutants, get_pollutant_distribution_by_region, get_seasonal_trends, get_yearly_trends
+from Analyze.analyze import add_geo_coordinates, get_monthly_trends, get_top_pollutants, get_pollutant_distribution_by_region, get_seasonal_trends, get_yearly_trends
 from tools import get_clean_data
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -18,7 +18,7 @@ def plot_most_common_pollutants(data_path, top_n=10):
     data = get_clean_data(data_path)
     
 
-    most_common_pollutants = get_most_common_pollutants(data, top_n=top_n)
+    most_common_pollutants = get_top_pollutants(data, top_n=top_n)
 
     most_common_pollutants['ShortName'] = most_common_pollutants['Name'].apply(lambda x: x[:15] + '...' if len(x) > 15 else x)
     

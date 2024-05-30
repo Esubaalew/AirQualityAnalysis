@@ -5,7 +5,7 @@ sys.path.append('../')
 
 from tools import get_clean_data
 
-def get_most_common_pollutants(data, top_n=10):
+def get_top_pollutants(data, top_n=10):
     """
     Get the top N most common air pollutants from the given dataset.
 
