@@ -1,9 +1,10 @@
 import sys
 sys.path.append('../')
 
-from Analyze.analyze import get_monthly_trends, get_most_common_pollutants, get_seasonal_trends, get_yearly_trends
+from Analyze.analyze import get_monthly_trends, get_most_common_pollutants, get_pollutant_distribution_by_region, get_seasonal_trends, get_yearly_trends
 from tools import get_clean_data
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 def plot_most_common_pollutants(data_path, top_n=10):
     """
@@ -41,12 +42,20 @@ def plot_monthly_trends(data_path):
     data = get_clean_data(data_path)
     monthly_trends = get_monthly_trends(data)
 
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 8))
     plt.plot(monthly_trends['Month'], monthly_trends['Data Value'], marker='o')
     plt.title('Monthly Average Pollutant Levels')
     plt.xlabel('Month')
     plt.ylabel('Average Pollutant Level')
-    plt.grid(True)
+    plt.grid(True, linestyle='--', linewidth=0.5)
+    
+    plt.xticks(ticks=monthly_trends['Month'], labels=monthly_trends['Month'].dt.strftime('%Y-%m'), rotation=45)
+
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    plt.tight_layout()
     plt.show()
 
 
@@ -87,6 +96,28 @@ def plot_seasonal_trends(data_path):
     plt.xlabel('Season')
     plt.ylabel('Average Pollutant Level')
     plt.show()
+
+
+def plot_pollutant_distribution_by_region(data_path, n=10):
+    """
+    Plot the distribution of pollutants across different geographical areas.
+
+    Parameters:
+    data_path (str): The file path to the input CSV file containing air pollutant data.
+    n (int): The number of top regions to display.
+    """
+    data = get_clean_data(data_path)
+    region_trends = get_pollutant_distribution_by_region(data)[:n]
+    
+    plt.figure(figsize=(12, 8))
+    sns.barplot(x='Data Value', y='Geo Place Name', data=region_trends, palette='viridis', hue='Geo Place Name', dodge=False, legend=False)
+    plt.title('Average Pollutant Levels by Region')
+    plt.xlabel('Average Pollutant Level')
+    plt.ylabel('Region')
+    plt.grid(True, linestyle='--', linewidth=0.5)
+    
+    plt.tight_layout()
+    plt.show()
     
 # Example usage:
-plot_seasonal_trends('../Air_Quality.csv')
+# plot_pollutant_distribution_by_region('../Air_Quality.csv', 5)
