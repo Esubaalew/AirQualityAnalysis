@@ -1,7 +1,7 @@
 import sys
 sys.path.append('../')
 
-from Analyze.analyze import get_most_common_pollutants
+from Analyze.analyze import get_monthly_trends, get_most_common_pollutants
 from tools import get_clean_data
 import matplotlib.pyplot as plt
 
@@ -30,5 +30,25 @@ def plot_most_common_pollutants(data_path, top_n=10):
     plt.title(f'Top {top_n} Most Common Air Pollutants')
     plt.show()
 
+
+def plot_monthly_trends(data_path):
+    """
+    Plot monthly average pollutant levels.
+
+    Parameters:
+    data_path (str): The file path to the input CSV file containing air pollutant data.
+    """
+    data = get_clean_data(data_path)
+    monthly_trends = get_monthly_trends(data)
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(monthly_trends['Month'], monthly_trends['Data Value'], marker='o')
+    plt.title('Monthly Average Pollutant Levels')
+    plt.xlabel('Month')
+    plt.ylabel('Average Pollutant Level')
+    plt.grid(True)
+    plt.show()
+
 # Example usage:
 # plot_most_common_pollutants('../Air_Quality.csv', top_n=10)
+plot_monthly_trends('../Air_Quality.csv')

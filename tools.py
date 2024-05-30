@@ -16,4 +16,3 @@ def get_clean_data(file:str = "Air_Quality.csv"):
     clean_data['Start_Date'] = pd.to_datetime(clean_data['Start_Date'])
 
     return clean_data
-
