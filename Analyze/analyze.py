@@ -98,3 +98,34 @@ def add_geo_coordinates(data, geo_coordinates):
     data['Latitude'] = data['Geo Place Name'].map(lambda x: geo_coordinates.get(x, {}).get('lat', None))
     data['Longitude'] = data['Geo Place Name'].map(lambda x: geo_coordinates.get(x, {}).get('lon', None))
     return data.dropna(subset=['Latitude', 'Longitude'])
+
+
+def identify_high_pollution_events(data, threshold):
+    """
+    Identify high pollution events based on a threshold value.
+
+    Parameters:
+    data (DataFrame): The input DataFrame containing air pollutant data.
+    threshold (float): The threshold value for high pollution events.
+
+    Returns:
+    DataFrame: A DataFrame containing high pollution events.
+    """
+    high_pollution_events = data[data['Data Value'] > threshold]
+    return high_pollution_events
+
+def assess_policy_impacts(before_data, after_data):
+    """
+    Assess the impacts of policies on pollutant levels.
+
+    Parameters:
+    before_data (DataFrame): DataFrame containing air pollutant data before policy implementation.
+    after_data (DataFrame): DataFrame containing air pollutant data after policy implementation.
+
+    Returns:
+    DataFrame: A DataFrame containing the changes in pollutant levels after policy implementation.
+    """
+    before_mean = before_data['Data Value'].mean()
+    after_mean = after_data['Data Value'].mean()
+    impact = after_mean - before_mean
+    return impact

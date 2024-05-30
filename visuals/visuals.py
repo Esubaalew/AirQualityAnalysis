@@ -1,7 +1,7 @@
 import sys
 sys.path.append('../')
 
-from Analyze.analyze import add_geo_coordinates, get_monthly_trends, get_top_pollutants, get_pollutant_distribution_by_region, get_seasonal_trends, get_yearly_trends
+from Analyze.analyze import add_geo_coordinates, assess_policy_impacts, get_monthly_trends, get_top_pollutants, get_pollutant_distribution_by_region, get_seasonal_trends, get_yearly_trends, identify_high_pollution_events
 from tools import get_clean_data
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -140,6 +140,51 @@ def plot_geographical_pollutant_heatmap(data_path, geo_coordinates):
 
     plt.tight_layout()
     plt.show()
+
+
+def plot_high_pollution_events(data_path, threshold=50):
+    """
+    Visualize high pollution events using a scatter plot.
+
+    Parameters:
+    data_path (str): The file path to the input CSV file containing air pollutant data.
+    threshold (float): The threshold value for high pollution events.
+    """
+    data = get_clean_data(data_path)
+    high_pollution_events = identify_high_pollution_events(data, threshold)
+    
+    plt.figure(figsize=(10, 6))
+    plt.scatter(high_pollution_events['Start_Date'], high_pollution_events['Data Value'], color='red', marker='x')
+    plt.title('High Pollution Events')
+    plt.xlabel('Date')
+    plt.ylabel('Pollutant Level')
+    plt.grid(True, linestyle='--', linewidth=0.5)
+    
+    plt.tight_layout()
+    plt.show()
+
+def plot_policy_impacts(before_data_path, after_data_path):
+    """
+    Visualize the impacts of policies on pollutant levels.
+
+    Parameters:
+    before_data_path (str): The file path to the input CSV file containing air pollutant data before policy implementation.
+    after_data_path (str): The file path to the input CSV file containing air pollutant data after policy implementation.
+    """
+    before_data = get_clean_data(before_data_path)
+    after_data = get_clean_data(after_data_path)
+    
+    impact = assess_policy_impacts(before_data, after_data)
+    
+    plt.figure(figsize=(8, 6))
+    sns.barplot(x=['Before Policy', 'After Policy'], y=[before_data['Data Value'].mean(), after_data['Data Value'].mean()], palette='viridis')
+    plt.title('Policy Impacts on Pollutant Levels')
+    plt.ylabel('Average Pollutant Level')
+    plt.grid(True, linestyle='--', linewidth=0.5)
+    
+    plt.tight_layout()
+    plt.show()
+
     
 # Example usage:
 # geo_coordinates = {
