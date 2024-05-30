@@ -68,3 +68,33 @@ def get_seasonal_trends(data):
     data['Season'] = data['Season'].map(season_labels)
     seasonal_trends = data.groupby('Season')['Data Value'].mean().reset_index()
     return seasonal_trends
+
+
+def get_pollutant_distribution_by_region(data):
+    """
+    Calculate the average pollutant levels for each region.
+
+    Parameters:
+    data (DataFrame): The input DataFrame containing air pollutant data.
+
+    Returns:
+    DataFrame: A DataFrame with columns 'Geo Place Name' and 'Data Value' for average pollutant levels.
+    """
+    region_trends = data.groupby('Geo Place Name')['Data Value'].mean().reset_index()
+    region_trends = region_trends.sort_values(by='Data Value', ascending=False)
+    return region_trends
+
+def add_geo_coordinates(data, geo_coordinates):
+    """
+    Add geographical coordinates to the dataset based on Geo Place Name.
+
+    Parameters:
+    data (DataFrame): The input DataFrame containing air pollutant data.
+    geo_coordinates (dict): A dictionary mapping Geo Place Name to coordinates.
+
+    Returns:
+    DataFrame: DataFrame with latitude and longitude columns added.
+    """
+    data['Latitude'] = data['Geo Place Name'].map(lambda x: geo_coordinates.get(x, {}).get('lat', None))
+    data['Longitude'] = data['Geo Place Name'].map(lambda x: geo_coordinates.get(x, {}).get('lon', None))
+    return data.dropna(subset=['Latitude', 'Longitude'])
