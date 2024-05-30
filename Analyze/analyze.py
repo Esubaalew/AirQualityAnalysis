@@ -50,3 +50,21 @@ def get_yearly_trends(data):
     data['Year'] = data['Start_Date'].dt.year
     yearly_trends = data.groupby('Year')['Data Value'].mean().reset_index()
     return yearly_trends
+
+
+def get_seasonal_trends(data):
+    """
+    Calculate seasonal average pollutant levels.
+
+    Parameters:
+    data (DataFrame): The input DataFrame containing air pollutant data.
+
+    Returns:
+    DataFrame: A DataFrame containing seasonal average pollutant levels.
+    """
+    data['Month'] = data['Start_Date'].dt.month
+    data['Season'] = data['Month'].apply(lambda x: (x%12 + 3)//3)
+    season_labels = {1: 'Winter', 2: 'Spring', 3: 'Summer', 4: 'Fall'}
+    data['Season'] = data['Season'].map(season_labels)
+    seasonal_trends = data.groupby('Season')['Data Value'].mean().reset_index()
+    return seasonal_trends
