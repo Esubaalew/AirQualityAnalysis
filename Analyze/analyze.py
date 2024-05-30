@@ -37,3 +37,16 @@ def get_monthly_trends(data):
     return monthly_trends
 
 
+def get_yearly_trends(data):
+    """
+    Calculate yearly average pollutant levels.
+
+    Parameters:
+    data (DataFrame): The input DataFrame containing air pollutant data.
+
+    Returns:
+    DataFrame: A DataFrame containing yearly average pollutant levels.
+    """
+    data['Year'] = data['Start_Date'].dt.year
+    yearly_trends = data.groupby('Year')['Data Value'].mean().reset_index()
+    return yearly_trends
