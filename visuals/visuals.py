@@ -1,7 +1,7 @@
 import sys
 sys.path.append('../')
 
-from Analyze.analyze import get_monthly_trends, get_most_common_pollutants, get_pollutant_distribution_by_region, get_seasonal_trends, get_yearly_trends
+from Analyze.analyze import add_geo_coordinates, get_monthly_trends, get_most_common_pollutants, get_pollutant_distribution_by_region, get_seasonal_trends, get_yearly_trends
 from tools import get_clean_data
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -118,6 +118,33 @@ def plot_pollutant_distribution_by_region(data_path, n=10):
     
     plt.tight_layout()
     plt.show()
+
+
+def plot_geographical_pollutant_heatmap(data_path, geo_coordinates):
+    """
+    Plot a heatmap to visualize pollutant concentrations geographically.
+
+    Parameters:
+    data_path (str): The file path to the input CSV file containing air pollutant data.
+    geo_coordinates (dict): A dictionary mapping Geo Place Name to coordinates.
+    """
+    data = get_clean_data(data_path)
+    data = add_geo_coordinates(data, geo_coordinates)
+
+    plt.figure(figsize=(12, 8))
+    heatmap_data = data.pivot_table(index='Latitude', columns='Longitude', values='Data Value', aggfunc='mean')
+    sns.heatmap(heatmap_data, cmap='viridis', annot=True)
+    plt.title('Geographical Heatmap of Pollutant Concentrations')
+    plt.xlabel('Longitude')
+    plt.ylabel('Latitude')
+
+    plt.tight_layout()
+    plt.show()
     
 # Example usage:
-# plot_pollutant_distribution_by_region('../Air_Quality.csv', 5)
+# geo_coordinates = {
+#     'Southeast Queens': {'lat': 40.676, 'lon': -73.756},
+#     'Bensonhurst - Bay Ridge': {'lat': 40.611, 'lon': -74.011},
+#     'Rockaways': {'lat': 40.586, 'lon': -73.811},
+#     'Coney Island - Sheepshead Bay': {'lat': 40.583, 'lon': -73.944},
+# }
