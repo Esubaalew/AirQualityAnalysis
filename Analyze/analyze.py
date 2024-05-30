@@ -1,5 +1,8 @@
 import sys
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 sys.path.append('../')
 
 
@@ -129,3 +132,50 @@ def assess_policy_impacts(before_data, after_data):
     after_mean = after_data['Data Value'].mean()
     impact = after_mean - before_mean
     return impact
+
+
+def calculate_summary_statistics(data):
+    """
+    Calculate summary statistics for pollutant levels.
+
+    Parameters:
+    data (DataFrame): The input DataFrame containing air pollutant data.
+
+    Returns:
+    dict: A dictionary containing summary statistics (mean, median, std, min, max).
+    """
+    summary_stats = {
+        'Mean': data['Data Value'].mean(),
+        'Median': data['Data Value'].median(),
+        'Standard Deviation': data['Data Value'].std(),
+        'Minimum': data['Data Value'].min(),
+        'Maximum': data['Data Value'].max()
+    }
+    return summary_stats
+
+def analyze_distribution(data):
+    """
+    Analyze the distribution of pollutant levels.
+
+    Parameters:
+    data (DataFrame): The input DataFrame containing air pollutant data.
+    """
+    plt.figure(figsize=(12, 6))
+    sns.histplot(data['Data Value'], kde=True, bins=20, color='skyblue')
+    plt.title('Distribution of Pollutant Levels')
+    plt.xlabel('Pollutant Level')
+    plt.ylabel('Frequency')
+    plt.grid(True, linestyle='--', linewidth=0.5)
+
+    plt.figure(figsize=(10, 6))
+    sns.boxplot(data['Data Value'], color='lightgreen')
+    plt.title('Box Plot of Pollutant Levels')
+    plt.xlabel('Pollutant Level')
+
+    plt.tight_layout()
+    plt.show()
+
+
+# Example usage
+data = get_clean_data('../Air_Quality.csv')
+analyze_distribution(data)
