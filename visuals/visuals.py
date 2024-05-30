@@ -1,12 +1,18 @@
 import sys
 sys.path.append('../')
 
-from Analyze.analyze import add_geo_coordinates, assess_policy_impacts, get_monthly_trends, get_top_pollutants, get_pollutant_distribution_by_region, get_seasonal_trends, get_yearly_trends, identify_high_pollution_events
+from Analyze.analyze import (add_geo_coordinates,
+                              assess_policy_impacts, 
+                              get_monthly_trends,
+                                get_top_pollutants, 
+                                get_pollutant_distribution_by_region, 
+                                get_seasonal_trends, get_yearly_trends, 
+                                identify_high_pollution_events)
 from tools import get_clean_data
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def plot_most_common_pollutants(data_path, top_n=10):
+def plot_top_pollutants(data_path, top_n=10):
     """
     Plot the top N most common air pollutants from the given dataset.
 
