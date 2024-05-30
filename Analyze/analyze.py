@@ -68,3 +68,5 @@ def get_seasonal_trends(data):
     data['Season'] = data['Season'].map(season_labels)
     seasonal_trends = data.groupby('Season')['Data Value'].mean().reset_index()
     return seasonal_trends
+
+# print(get_yearly_trends(get_clean_data('../Air_Quality.csv')) )
