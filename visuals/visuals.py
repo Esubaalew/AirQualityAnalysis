@@ -1,7 +1,7 @@
 import sys
 sys.path.append('../')
 
-from Analyze.analyze import get_monthly_trends, get_most_common_pollutants, get_yearly_trends
+from Analyze.analyze import get_monthly_trends, get_most_common_pollutants, get_seasonal_trends, get_yearly_trends
 from tools import get_clean_data
 import matplotlib.pyplot as plt
 
@@ -70,5 +70,23 @@ def plot_yearly_trends(data_path):
     plt.grid(True)
     plt.show()
 
+
+def plot_seasonal_trends(data_path):
+    """
+    Plot seasonal average pollutant levels.
+
+    Parameters:
+    data_path (str): The file path to the input CSV file containing air pollutant data.
+    """
+    data = get_clean_data(data_path)
+    seasonal_trends = get_seasonal_trends(data)
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(seasonal_trends['Season'], seasonal_trends['Data Value'], color=['blue', 'green', 'red', 'orange'])
+    plt.title('Seasonal Average Pollutant Levels')
+    plt.xlabel('Season')
+    plt.ylabel('Average Pollutant Level')
+    plt.show()
+    
 # Example usage:
-# plot_yearly_trends('../Air_Quality.csv')
+plot_seasonal_trends('../Air_Quality.csv')
